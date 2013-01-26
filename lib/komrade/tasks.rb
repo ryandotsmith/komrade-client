@@ -1,3 +1,5 @@
+require 'komrade/worker'
+
 task :environment
 
 namespace :komrade do

@@ -18,7 +18,7 @@ module Komrade
       get("/jobs?limit=#{limit}")
     end
 
-    def delete(id)
+    def remove(id)
       delete("/jobs/#{id}")
     end
   end

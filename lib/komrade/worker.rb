@@ -33,8 +33,8 @@ module Komrade
         rescue => e
           handle_failure(job, e)
         ensure
-          Queue.delete(job["id"])
-          log(:at => "delete_job", :job => job[:id])
+          Queue.remove(job["id"])
+          log(:at => "remove-job", :job => job["id"])
         end
       end
     end

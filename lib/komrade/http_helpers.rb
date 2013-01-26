@@ -1,6 +1,7 @@
 require 'json'
 require 'net/http'
 require 'komrade'
+require 'komrade/rate_limiter'
 
 module Komrade
   module HttpHelpers
@@ -33,17 +34,31 @@ module Komrade
       attempts = 0
       while attempts < MAX_RETRY
         begin
-          resp = http.request(req)
+          resp = nil
+          RateLimiter.limiter(req.path, 10, 1) do
+            resp = http.request(req)
+          end
           if (Integer(resp.code) / 100) == 2
             return JSON.parse(resp.body)
           end
         rescue Net::HTTPError => e
           next
+        rescue RateLimiter::Unavailable
+          sleep(0.5)
         ensure
           attempts += 1
         end
       end
-      raise(Komrade::Error, "Unable to send work to Komrade.")
+      case req.class
+      when Net::HTTP::Delete
+        raise(Komrade::Error, "Unable to delete work from Komrade.")
+      when Net::HTTP::Put
+        raise(Komrade::Error, "Unable to send work to Komrade.")
+      when Net::HTTP::Get
+        raise(Komrade::Error, "Unable to get work from Komrade.")
+      default
+        raise(Komrade::Error, "Unable to communicate with Komrade.")
+      end
     end
 
     def http
