@@ -49,6 +49,7 @@ end
 Rakefile
 
 ```ruby
+require 'komrade'
 require 'komrade/tasks'
 ```
 
