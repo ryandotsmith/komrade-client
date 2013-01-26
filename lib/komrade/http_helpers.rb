@@ -6,8 +6,8 @@ module Komrade
   module HttpHelpers
     MAX_RETRY = 4
 
-    def post(path, body)
-      make_request(Net::HTTP::Post.new(path), body)
+    def put(path, body)
+      make_request(Net::HTTP::Put.new(path), body)
     end
 
     def get(path)
@@ -19,11 +19,12 @@ module Komrade
     end
 
     def make_request(req, body=nil)
+      req.basic_auth(Komrade.url.user, Komrade.url.password)
       if body
         begin
           req.content_type = 'application/json'
           req.body = JSON.dump(body)
-        rescue => e
+        rescue JSON => e
           raise(ArgumentError,
             "Komrade is unable to convert enqueue payload to JSON.\n" +
             "payload=#{body}\n")
@@ -33,21 +34,20 @@ module Komrade
       while attempts < MAX_RETRY
         begin
           resp = http.request(req)
-          if (resp.status / 100) == 2
+          if (Integer(resp.code) / 100) == 2
             return JSON.parse(resp.body)
           end
-        rescue => e
-          puts e.backtrace
+        rescue Net::HTTPError => e
           next
         ensure
           attempts += 1
         end
       end
-      raise(Komrade::Error, "Unable to connect to Komrade.")
+      raise(Komrade::Error, "Unable to send work to Komrade.")
     end
 
     def http
-      @http ||= Net::HTTP.new(Komrade.url.to_s).tap do |h|
+      @http ||= Net::HTTP.new(Komrade.url.host, Komrade.url.port).tap do |h|
         if Komrade.url.scheme == 'https'
           h.use_ssl = true
           h.verify_mode = OpenSSL::SSL::VERIFY_NONE
@@ -57,4 +57,3 @@ module Komrade
 
   end
 end
-

@@ -39,7 +39,7 @@ class User < ActiveRecord::Base
   end
 
   def enqueue_welcome_email
-    Komrade.enqueue(method: "User.send_welcome_email", args: self.id)
+    Komrade.enqueue("User.send_welcome_email", self.id)
   end
 end
 ```

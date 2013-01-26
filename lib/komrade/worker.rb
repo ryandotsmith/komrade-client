@@ -5,7 +5,6 @@ module Komrade
 
     def initialize(args={})
       @running = true
-      @queue_name = args[:queue]
     end
 
     # Start a loop and work jobs indefinitely.
@@ -30,11 +29,11 @@ module Komrade
       until jobs.empty?
         job = jobs.pop
         begin
-          call(job)
+          call(job["payload"])
         rescue => e
           handle_failure(job, e)
         ensure
-          Queue.delete(job[:id])
+          Queue.delete(job["id"])
           log(:at => "delete_job", :job => job[:id])
         end
       end
@@ -43,10 +42,10 @@ module Komrade
     # Each job includes a method column. We will use ruby's eval
     # to grab the ruby object from memory. We send the method to
     # the object and pass the args.
-    def call(job)
-      args = job[:args]
-      klass = eval(job[:method].split(".").first)
-      message = job[:method].split(".").last
+    def call(payload)
+      args = payload["args"]
+      klass = eval(payload["method"].split(".").first)
+      message = payload["method"].split(".").last
       klass.send(message, *args)
     end
 
