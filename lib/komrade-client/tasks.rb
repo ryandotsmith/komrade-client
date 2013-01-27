@@ -1,4 +1,4 @@
-require 'komrade/worker'
+require 'komrade-client/worker'
 
 task :environment
 

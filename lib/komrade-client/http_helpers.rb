@@ -1,13 +1,13 @@
 require 'json'
 require 'net/http'
-require 'komrade'
-require 'komrade/rate_limiter'
+require 'komrade-client'
+require 'komrade-client/rate_limiter'
 
 module Komrade
   module HttpHelpers
     MAX_RETRY = 4
 
-    def put(path, body)
+    def put(path, body=nil)
       make_request(Net::HTTP::Put.new(path), body)
     end
 

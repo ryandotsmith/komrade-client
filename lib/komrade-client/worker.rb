@@ -1,4 +1,4 @@
-require 'komrade/queue'
+require 'komrade-client/queue'
 
 module Komrade
   class Worker
@@ -52,7 +52,10 @@ module Komrade
     # This method will be called when an exception
     # is raised during the execution of the job.
     def handle_failure(job,e)
-      log(:at => "handle_failure")
+      fid = SecureRandom.uuid
+      log(:at => "handle_failure", failure_id: fid)
+      b = {error: e.class, message: e.message}
+      HttpHelpers.put("/jobs/#{job['id']}/failures/#{fid}", b)
     end
 
     def log(data)

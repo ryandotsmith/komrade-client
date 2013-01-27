@@ -1,6 +1,6 @@
 require 'securerandom'
-require 'komrade'
-require 'komrade/http_helpers'
+require 'komrade-client'
+require 'komrade-client/http_helpers'
 
 module Komrade
   module Queue

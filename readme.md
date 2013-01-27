@@ -4,8 +4,10 @@ A client library for the komrade worker queue.
 
 ## Setup
 
+Email komrade@32k.io with your heroku email address for a beta pass.
+
 ```bash
-$ heroku addons:add komrade:basic
+$ heroku addons:add komrade:test
 $ gem install komrade-client
 ```
 
@@ -21,7 +23,7 @@ Gemfile
 
 ```ruby
 source :rubygems
-gem 'komrade-client', '1.0.0'
+gem 'komrade-client', '1.0.1'
 ```
 
 ### Enqueue
@@ -29,6 +31,8 @@ gem 'komrade-client', '1.0.0'
 Example Model
 
 ```ruby
+require 'komrade-client/queue'
+
 class User < ActiveRecord::Base
   after_create :enqueue_welcome_email
 
@@ -39,7 +43,7 @@ class User < ActiveRecord::Base
   end
 
   def enqueue_welcome_email
-    Komrade.enqueue("User.send_welcome_email", self.id)
+    Komrade::Queue.enqueue("User.send_welcome_email", self.id)
   end
 end
 ```
@@ -49,8 +53,7 @@ end
 Rakefile
 
 ```ruby
-require 'komrade'
-require 'komrade/tasks'
+require 'komrade-client/tasks'
 ```
 
 Procfile
