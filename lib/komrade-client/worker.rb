@@ -1,4 +1,5 @@
 require 'komrade-client/queue'
+require 'komrade-client/http_helpers'
 
 module Komrade
   class Worker

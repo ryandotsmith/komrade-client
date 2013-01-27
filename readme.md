@@ -16,6 +16,7 @@ $ gem install komrade-client
 1. Install Gem
 2. Enqueue
 3. Dequeue
+4. Komrade Dashboard
 
 ### Install
 
@@ -62,3 +63,11 @@ Procfile
 web: bundle exec rails s
 worker: bundle exec rake komrade:work
 ```
+
+### Komrade Dashboard
+
+```bash
+$ heroku addons:open komrade:test
+```
+
+![img](http://f.cl.ly/items/1h0b1m393E0E0A313i0T/Screen%20Shot%202013-01-27%20at%2011.21.45%20AM.png)

@@ -5,6 +5,7 @@ require 'komrade-client/rate_limiter'
 
 module Komrade
   module HttpHelpers
+    extend self
     MAX_RETRY = 4
 
     def put(path, body=nil)
