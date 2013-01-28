@@ -70,4 +70,4 @@ worker: bundle exec rake komrade:work
 $ heroku addons:open komrade:test
 ```
 
-![img](http://f.cl.ly/items/1h0b1m393E0E0A313i0T/Screen%20Shot%202013-01-27%20at%2011.21.45%20AM.png)
+![img](http://f.cl.ly/items/0G3f0B2J3J40451h0k3I/Screen%20Shot%202013-01-27%20at%2010.41.53%20PM.png)
