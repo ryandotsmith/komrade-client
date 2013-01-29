@@ -35,7 +35,7 @@ module Komrade
           handle_failure(job, e)
         ensure
           Queue.remove(job["id"])
-          log(:at => "remove-job", :job => job["id"])
+          log(:at => "remove-job", :job => job["id"], :method => job["payload"]["method"])
         end
       end
     end

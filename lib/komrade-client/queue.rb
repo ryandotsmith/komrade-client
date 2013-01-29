@@ -10,7 +10,7 @@ module Komrade
     def enqueue(method, *args)
       SecureRandom.uuid.tap do |id|
         put("/jobs/#{id}", method: method, args: args)
-        log(:at => "enqueue-job", :job => id)
+        log(:at => "enqueue-job", :job => id, :method => method)
       end
     end
 
