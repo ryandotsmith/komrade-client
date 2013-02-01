@@ -8,6 +8,10 @@ module Komrade
     extend self
     MAX_RETRY = 4
 
+    def post(path, body=nil)
+      make_request(Net::HTTP::Post.new(path), body)
+    end
+
     def put(path, body=nil)
       make_request(Net::HTTP::Put.new(path), body)
     end
@@ -63,7 +67,7 @@ module Komrade
     end
 
     def http
-      @http ||= Net::HTTP.new(Komrade.url.host, Komrade.url.port).tap do |h|
+      Net::HTTP.new(Komrade.url.host, Komrade.url.port).tap do |h|
         if Komrade.url.scheme == 'https'
           h.use_ssl = true
           h.verify_mode = OpenSSL::SSL::VERIFY_NONE

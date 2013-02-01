@@ -30,7 +30,16 @@ module Komrade
       until jobs.empty?
         job = jobs.pop
         begin
+          @finished, @beats = false, 0
+          Thread.new do
+            while @beats == 0 || !@finished
+              @beats += 1
+              HttpHelpers.post("/jobs/#{job['id']}/heartbeats")
+              sleep(1)
+            end
+          end
           call(job["payload"])
+          @finished = true
         rescue => e
           handle_failure(job, e)
         ensure
