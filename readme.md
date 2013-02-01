@@ -1,6 +1,6 @@
-# Komrade
+# Komrade Client
 
-A client library for the komrade worker queue.
+A small, Ruby superset of Komrade's [HTTP API](https://gist.github.com/4641301)
 
 ## Setup
 
@@ -28,6 +28,14 @@ gem 'komrade-client', '1.0.1'
 ```
 
 ### Enqueue
+
+Simple Example
+
+```bash
+$ export KOMRADE_URL=https://u:p@service.komrade.io
+$ ruby -r komrade-client -e 'Komrade::Queue.enqueue("puts", "hello world")`
+$ ruby -r komrade-client -e 'puts Komrade::Queue.dequeue`
+```
 
 Example Model
 
@@ -71,3 +79,4 @@ $ heroku addons:open komrade:test
 ```
 
 ![img](http://f.cl.ly/items/0G3f0B2J3J40451h0k3I/Screen%20Shot%202013-01-27%20at%2010.41.53%20PM.png)
+
