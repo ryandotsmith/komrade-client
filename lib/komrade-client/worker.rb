@@ -44,7 +44,7 @@ module Komrade
           handle_failure(job, e)
         ensure
           Queue.remove(job["id"])
-          log(:at => "remove-job", :job => job["id"])
+          log(:at => "remove-job", :job => job["id"], :method => job["payload"]["method"])
         end
       end
     end
@@ -63,7 +63,7 @@ module Komrade
     # is raised during the execution of the job.
     def handle_failure(job,e)
       fid = SecureRandom.uuid
-      log(:at => "handle_failure", failure_id: fid)
+      log(:at => "handle-failure", :failure_id => fid)
       b = {error: e.class, message: e.message}
       HttpHelpers.put("/jobs/#{job['id']}/failures/#{fid}", b)
     end

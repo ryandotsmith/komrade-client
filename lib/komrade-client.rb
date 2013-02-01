@@ -17,6 +17,7 @@ module Komrade
   end
 
   def log(data)
+    data.merge!(:lib => 'Komrade')
     result = nil
     if data.key?(:measure)
       data[:measure].insert(0, "komrade.")
