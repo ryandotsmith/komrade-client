@@ -35,3 +35,5 @@ module Komrade
   end
 
 end
+
+require 'komrade-client/queue'
