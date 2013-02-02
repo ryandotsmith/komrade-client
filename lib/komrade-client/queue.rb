@@ -9,22 +9,27 @@ module Komrade
 
     def enqueue(method, *args)
       SecureRandom.uuid.tap do |id|
-        put("/jobs/#{id}", method: method, args: args)
-        log(:at => "enqueue-job", :job => id, :method => method)
+        log(:at => "enqueue-job", :job => id, :method => method) do
+          put("/jobs/#{id}", method: method, args: args)
+        end
       end
     end
 
     def dequeue(opts={})
       limit = opts[:limit] || 1
-      get("/jobs?limit=#{limit}")
+      log(:at => "dequeue-job", :limit => limit) do
+        get("/jobs?limit=#{limit}")
+      end
     end
 
     def remove(id)
-      delete("/jobs/#{id}")
+      log(:at => "remove-job", :job => id) do
+        delete("/jobs/#{id}")
+      end
     end
 
-    def log(data)
-      Komrade.log(data)
+    def log(data, &blk)
+      Komrade.log(data, &blk)
     end
   end
 end
