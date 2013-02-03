@@ -11,8 +11,13 @@ namespace :komrade do
     @worker.start
   end
 
-  desc "Returns the number of jobs in the (default or QUEUE) queue"
+  desc "Returns the number of jobs in the queue."
   task :count => :environment do
     $stdout.puts(Komrade::Worker.new.queue.count)
+  end
+
+  desc "Deletes all jobs in the queue."
+  task :count => :environment do
+    $stdout.puts(Komrade::Worker.new.queue.delete_all)
   end
 end
