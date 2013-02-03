@@ -40,7 +40,6 @@ $ ruby -r komrade-client -e 'puts Komrade::Queue.dequeue`
 Example Model
 
 ```ruby
-require 'komrade-client/queue'
 
 class User < ActiveRecord::Base
   after_create :enqueue_welcome_email
