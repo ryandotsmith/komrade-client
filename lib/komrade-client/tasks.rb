@@ -17,7 +17,7 @@ namespace :komrade do
   end
 
   desc "Deletes all jobs in the queue."
-  task :count => :environment do
+  task :delete_all => :environment do
     $stdout.puts(Komrade::Worker.new.queue.delete_all)
   end
 end

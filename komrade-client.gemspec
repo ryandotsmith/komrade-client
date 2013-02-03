@@ -2,7 +2,7 @@
 Gem::Specification.new do |s|
   s.name          = "komrade-client"
   s.email         = "komrade@32k.io"
-  s.version       = "1.0.3"
+  s.version       = "1.0.4"
   s.date          = "2013-01-26"
   s.description   = "A client library for the komrad worker queue."
   s.summary       = "Queues are tough. Let Komrade work for you."
