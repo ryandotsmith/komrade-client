@@ -4,7 +4,7 @@ A small, Ruby superset of Komrade's [HTTP API](https://gist.github.com/4641301)
 
 ## Setup
 
-Email komrade@32k.io with your heroku email address for a beta pass.
+Email beta@komrade.io with your heroku email address for a beta pass.
 
 ```bash
 $ heroku addons:add komrade:test
