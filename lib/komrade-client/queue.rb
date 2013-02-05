@@ -23,12 +23,14 @@ module Komrade
     # If you dequeue a job, it is your responsiblity to update the job.
     # Updates to jobs include: heartbeat, fail, and delete.
     #
+    # There is no logging for dequeue since this method will be called
+    # frequently. Instead, logging should happen in the caller of
+    # dequeue to inform the stream that a job was locked.
+    #
     # Moderately fast operation.
     def dequeue(opts={})
       limit = opts[:limit] || 1
-      log(:at => "dequeue-job", :limit => limit) do
-        get("/jobs?limit=#{limit}")
-      end
+      get("/jobs?limit=#{limit}")
     end
 
     # Idempotent call to delete a job from the queue.
@@ -45,7 +47,7 @@ module Komrade
     #
     # Slow operation.
     def delete_all
-      log(:at => "cleat") do
+      log(:at => "delete-all") do
         post("/delete-all-jobs")
       end
     end

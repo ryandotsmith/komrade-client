@@ -25,21 +25,29 @@ module Komrade
     # This method will lock a job & evaluate the code defined by the job.
     # Also, this method will make the best attempt to delete the job
     # from the queue before returning.
+    #
+    # Before the worker evaluates the code extracted from the job,
+    # it spawns a thread which will send heartbeats to komrade. This
+    # indicates to the back end that the job is being processed. If heartbeats
+    # stop coming in for a job, komrade may thing that the job is lost and
+    # subsequently release the lock and place it back in the queue.
     def work
       jobs = Queue.dequeue
       until jobs.empty?
         job = jobs.pop
         begin
-          @finished, @beats = false, 0
-          Thread.new do
-            while @beats == 0 || !@finished
-              @beats += 1
-              HttpHelpers.post("/jobs/#{job['id']}/heartbeats")
-              sleep(1)
+          log(:at => "work-job", :limit => limit) do
+            @finished, @beats = false, 0
+            Thread.new do
+              while @beats == 0 || !@finished
+                @beats += 1
+                HttpHelpers.post("/jobs/#{job['id']}/heartbeats")
+                sleep(1)
+              end
             end
+            call(job["payload"])
+            @finished = true
           end
-          call(job["payload"])
-          @finished = true
         rescue => e
           handle_failure(job, e)
         ensure
