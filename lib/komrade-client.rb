@@ -17,7 +17,7 @@ module Komrade
   end
 
   def pem
-    @pem ||= File.join(File.dirname(__FILE__), "service-1.komrade.io.pem")
+    @pem ||= File.join(File.dirname(__FILE__), "../service-1.komrade.io.pem")
   end
 
   def log(data)
