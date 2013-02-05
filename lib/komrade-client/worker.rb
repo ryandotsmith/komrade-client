@@ -36,7 +36,7 @@ module Komrade
       until jobs.empty?
         job = jobs.pop
         begin
-          log(:at => "work-job", :limit => limit) do
+          log(:at => "work-job") do
             @finished, @beats = false, 0
             Thread.new do
               while @beats == 0 || !@finished
