@@ -16,6 +16,10 @@ module Komrade
     URI.parse(env!("KOMRADE_URL"))
   end
 
+  def pem
+    @pem ||= File.join(File.dirname(__FILE__), "service-1.komrade.io.pem")
+  end
+
   def log(data)
     data.merge!(:lib => 'komrade-client')
     result = nil

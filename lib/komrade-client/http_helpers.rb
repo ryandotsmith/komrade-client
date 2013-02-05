@@ -70,7 +70,8 @@ module Komrade
       Net::HTTP.new(Komrade.url.host, Komrade.url.port).tap do |h|
         if Komrade.url.scheme == 'https'
           h.use_ssl = true
-          h.verify_mode = OpenSSL::SSL::VERIFY_NONE
+          h.verify_mode = OpenSSL::SSL::VERIFY_PEER
+          h.ca_file = Komrade.pem
         end
       end
     end
