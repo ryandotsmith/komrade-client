@@ -71,7 +71,6 @@ module Komrade
         if Komrade.url.scheme == 'https'
           h.use_ssl = true
           h.verify_mode = OpenSSL::SSL::VERIFY_PEER
-          h.ca_file = Komrade.pem
         end
       end
     end
