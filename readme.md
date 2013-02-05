@@ -58,12 +58,6 @@ end
 
 ### Dequeue
 
-Rakefile
-
-```ruby
-require 'komrade-client/tasks'
-```
-
 Procfile
 
 ```
