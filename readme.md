@@ -24,7 +24,7 @@ Gemfile
 
 ```ruby
 source :rubygems
-gem 'komrade-client', '1.0.7'
+gem 'komrade-client', '1.0.8'
 ```
 
 ### Enqueue
