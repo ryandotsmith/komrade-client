@@ -9,6 +9,6 @@ Gem::Specification.new do |s|
   s.authors       = ["Ryan Smith (♠ ace hacker)"]
   s.homepage      = "http://github.com/ryandotsmith/komrade-client"
   s.license       = "MIT"
-  s.files         = Dir.glob("lib/**/*") << "readme.md" << "service-1.komrade.io.pem"
+  s.files         = Dir.glob("lib/**/*") << "readme.md"
   s.require_path  = "lib"
 end
