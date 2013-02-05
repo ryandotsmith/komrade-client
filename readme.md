@@ -33,8 +33,8 @@ Simple Example
 
 ```bash
 $ export KOMRADE_URL=https://u:p@service.komrade.io
-$ ruby -r komrade-client -e 'Komrade::Queue.enqueue("puts", "hello world")`
-$ ruby -r komrade-client -e 'puts Komrade::Queue.dequeue`
+$ ruby -r komrade-client -e 'Komrade::Queue.enqueue("puts", "hello world")'
+$ ruby -r komrade-client -e 'puts Komrade::Queue.dequeue'
 ```
 
 Example Model
