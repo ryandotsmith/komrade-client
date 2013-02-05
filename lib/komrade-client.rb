@@ -37,4 +37,8 @@ module Komrade
 end
 
 require 'komrade-client/queue'
-require 'komrade-client/railtie' if defined?(Rails)
+
+if defined?(Rails)
+  require 'komrade-client/railtie'
+  require 'komrade-client/komrade_generator.rb'
+end
