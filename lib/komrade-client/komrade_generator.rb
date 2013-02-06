@@ -1,9 +1,9 @@
 class KomradeGenerator < Rails::Generators::Base
-  def create_procfile
-    create_file "Procfile", "web: bundle exec rails s\nworker: bundle exec rake komrade:work"
-  end
-
-  def add_gem
-    gem "komrade-client"
+  desc "This generator adds a komrade-worker process to your Procfile"
+  def append_procfile
+    File.open("Procfile", 'ab') do |file|
+      file.write("komrade-worker: bundle exec rake komrade:work")
+    end
+    puts "A worker process has been added to your Procfile you will be billed accordingly."
   end
 end
