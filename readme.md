@@ -24,7 +24,7 @@ Gemfile
 
 ```ruby
 source :rubygems
-gem 'komrade-client', '~> 1.0.12'
+gem 'komrade-client', '~> 1.0.13'
 ```
 
 ### Minimalist Example ###
@@ -41,7 +41,7 @@ You should see "hello world" output in your terminal.
 
 ### Rails Example ###
 
-To get started add  `gem 'komrade-client', '~> 1.0.12'` to your Gemfile. Then run
+To get started add  `gem 'komrade-client', '~> 1.0.13'` to your Gemfile. Then run
 `rails g komrade`. This will add a komrade-worker process to your Procfile (feel
 free to edit your Procfile by hand if you prefer).
 
