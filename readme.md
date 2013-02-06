@@ -24,7 +24,7 @@ Gemfile
 
 ```ruby
 source :rubygems
-gem 'komrade-client', '~> 1.0.13'
+gem 'komrade-client', '~> 1.0.14'
 ```
 
 ### Minimalist Example ###
