@@ -14,30 +14,46 @@ $ gem install komrade-client
 ## Usage
 
 1. Install Gem
-2. Enqueue
-3. Dequeue
+2. Minimalist Example
+3. Rails Example
 4. Komrade Dashboard
 
-### Install
+### Install Gem
 
 Gemfile
 
 ```ruby
 source :rubygems
-gem 'komrade-client', '1.0.12'
+gem 'komrade-client', '~> 1.0.12'
 ```
 
-### Enqueue
+### Minimalist Example ###
 
-Simple Example
+This is the absolute bare minimum to see Komrade in action.
 
 ```bash
-$ export KOMRADE_URL=https://u:p@service.komrade.io
+$ export KOMRADE_URL=https://{heroku_username}:{heroku_password}@service.komrade.io
 $ ruby -r komrade-client -e 'Komrade::Queue.enqueue("puts", "hello world")'
 $ ruby -r komrade-client -e 'puts Komrade::Queue.dequeue'
 ```
 
-Example Model
+You should see "hello world" output in your terminal.
+
+### Rails Example ###
+
+To get started add  `gem 'komrade-client', '~> 1.0.12'` to your Gemfile. Then run
+`rails g komrade`. This will add a komrade-worker process to your Procfile (feel
+free to edit your Procfile by hand if you prefer).
+
+Your Procfile now should look something like this:
+```
+web: bundle exec rails s
+komrade-worker: bundle exec rake komrade:work
+```
+
+This is an example of a Rails model that sends a welcome email upon user sign up.
+The only code that is unique to Komrade here is the `Komrade::Queue.enqueue` method.
+This method takes a method as a string and any parameters you want to pass to that method.
 
 ```ruby
 
@@ -56,14 +72,9 @@ class User < ActiveRecord::Base
 end
 ```
 
-### Dequeue
+When you deploy your code, the will queue be ready to accept jobs, and the worker process
+is waiting to do the work.
 
-Procfile
-
-```
-web: bundle exec rails s
-worker: bundle exec rake komrade:work
-```
 
 ### Komrade Dashboard
 
