@@ -75,8 +75,8 @@ module Komrade
       HttpHelpers.put("/jobs/#{job['id']}/failures/#{fid}", b)
     end
 
-    def log(data)
-      Komrade.log(data)
+    def log(data, &blk)
+      Komrade.log(data, &blk)
     end
 
   end
