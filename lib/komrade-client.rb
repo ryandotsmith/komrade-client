@@ -40,5 +40,5 @@ require 'komrade-client/queue'
 
 if defined?(Rails)
   require 'komrade-client/railtie'
-  require 'komrade-client/komrade_generator.rb'
+  require 'komrade-client/komrade_generator'
 end
