@@ -4,7 +4,7 @@ require 'thread'
 module Komrade
   extend self
   Error = Class.new(StandardError)
-  outLocker = Mutex.new
+  @outLocker = Mutex.new
 
   def env(key)
     ENV[key]
@@ -32,7 +32,7 @@ module Komrade
     data.reduce(out=String.new) do |s, tup|
       s << [tup.first, tup.last].join("=") << " "
     end
-    outLocker.synchronize do
+    @outLocker.synchronize do
       $stdout.puts(out)
     end
     return result
