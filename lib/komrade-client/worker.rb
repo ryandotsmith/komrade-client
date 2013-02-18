@@ -41,6 +41,7 @@ module Komrade
             Thread.new do
               while @beats == 0 || !@finished
                 @beats += 1
+                log(:at => "heartbeat-job", :id => job['id'])
                 HttpHelpers.post("/jobs/#{job['id']}/heartbeats")
                 sleep(1)
               end
@@ -71,7 +72,7 @@ module Komrade
     # is raised during the execution of the job.
     def handle_failure(job,e)
       fid = SecureRandom.uuid
-      log(:at => "handle-failure", :failure_id => fid)
+      log(:at => "handle-failure", :id => job['id'], 'failure-id' => fid)
       b = {error: e.class, message: e.message}
       HttpHelpers.put("/jobs/#{job['id']}/failures/#{fid}", b)
     end
