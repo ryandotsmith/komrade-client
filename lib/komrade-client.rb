@@ -1,8 +1,10 @@
 require 'uri'
+require 'thread'
 
 module Komrade
   extend self
   Error = Class.new(StandardError)
+  outLocker = Mutex.new
 
   def env(key)
     ENV[key]
@@ -25,12 +27,14 @@ module Komrade
     if block_given?
       start = Time.now
       result = yield
-      data.merge!(val: (Time.now - start))
+      data.merge!(:val => (Time.now - start))
     end
     data.reduce(out=String.new) do |s, tup|
       s << [tup.first, tup.last].join("=") << " "
     end
-    $stdout.puts(out)
+    outLocker.synchronize do
+      $stdout.puts(out)
+    end
     return result
   end
 
