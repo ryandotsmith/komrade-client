@@ -36,7 +36,7 @@ module Komrade
       until jobs.empty?
         job = jobs.pop
         begin
-          log(:at => "work-job") do
+          log(:at => "work-job", :id => job['id']) do
             @finished, @beats = false, 0
             Thread.new do
               while @beats == 0 || !@finished
@@ -50,6 +50,7 @@ module Komrade
           end
         rescue => e
           handle_failure(job, e)
+          raise(e)
         ensure
           Queue.remove(job["id"])
         end
