@@ -12,7 +12,7 @@ module Komrade
     # Fast operation.
     def enqueue(method, *args)
       SecureRandom.uuid.tap do |id|
-        log(:at => "enqueue-job", :job => id, :method => method) do
+        log(:at => "enqueue-job", :id => id, :method => method) do
           put("/jobs/#{id}", method: method, args: args)
         end
       end
@@ -37,7 +37,7 @@ module Komrade
     #
     # Fast operation.
     def remove(id)
-      log(:at => "remove-job", :job => id) do
+      log(:at => "remove-job", :id => id) do
         delete("/jobs/#{id}")
       end
     end
