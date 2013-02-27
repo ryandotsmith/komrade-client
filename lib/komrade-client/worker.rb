@@ -72,8 +72,10 @@ module Komrade
     # is raised during the execution of the job.
     def handle_failure(job,e)
       fid = SecureRandom.uuid
+
       log(:at => "handle-failure", :id => job['id'], 'failure-id' => fid)
-      b = {error: e.class, message: e.message}
+      b = {error: e.class, message: e.message, method: job['payload']['method'],
+        args: job['payload']['args']}
       HttpHelpers.put("/jobs/#{job['id']}/failures/#{fid}", b)
     end
 
