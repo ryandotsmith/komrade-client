@@ -51,7 +51,7 @@ module Komrade
           end
         rescue => e
           handle_failure(job, e)
-          raise(e)
+          #raise(e)
         ensure
           Queue.remove(job["id"])
         end
