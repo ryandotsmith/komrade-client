@@ -1,25 +1,36 @@
+require 'thread'
 require 'komrade-client/queue'
 require 'komrade-client/http_helpers'
 
 module Komrade
   class Worker
 
-    def initialize(args={})
+    def initialize(incoming)
       @running = true
+      @incoming = incoming
     end
 
-    # Start a loop and work jobs indefinitely.
-    # Call this method to start the worker.
-    # This is the easiest way to start working jobs.
     def start
-      work while @running
+      Thread.new do
+        while @running
+          begin
+            job = @incoming.shift(false)
+            work(job)
+          rescue ThreadError
+            sleep(0.1)
+            next
+          end
+        end
+      end
     end
 
     # Call this method to stop the worker.
     # The worker may not stop immediately if the worker
     # is sleeping.
     def stop
-      @running = false
+      log(:at => "Shutting down komrade worker.") do
+        @running = false
+      end
     end
 
     # This method will lock a job & evaluate the code defined by the job.
@@ -31,30 +42,26 @@ module Komrade
     # indicates to the back end that the job is being processed. If heartbeats
     # stop coming in for a job, komrade may thing that the job is lost and
     # subsequently release the lock and place it back in the queue.
-    def work
-      jobs = Queue.dequeue
-      until jobs.empty?
-        job = jobs.pop
-        begin
-          log(:at => "work-job", :id => job['id']) do
-            @finished, @beats = false, 0
-            Thread.new do
-              while @beats == 0 || !@finished
-                @beats += 1
-                log(:at => "heartbeat-job", :id => job['id'])
-                HttpHelpers.post("/jobs/#{job['id']}/heartbeats")
-                sleep(1)
-              end
+    def work(job)
+      begin
+        log(:at => "work-job", :id => job['id']) do
+          @finished, @beats = false, 0
+          Thread.new do
+            while @beats == 0 || !@finished
+              @beats += 1
+              log(:at => "heartbeat-job", :id => job['id'])
+              HttpHelpers.post("/jobs/#{job['id']}/heartbeats")
+              sleep(1)
             end
-            call(job["payload"])
-            @finished = true
           end
-        rescue => e
-          handle_failure(job, e)
-          #raise(e)
-        ensure
-          Queue.remove(job["id"])
+          call(job["payload"])
         end
+      rescue => e
+        handle_failure(job, e)
+        #raise(e)
+      ensure
+        @finished = true
+        Queue.remove(job["id"])
       end
     end
 

@@ -1,4 +1,4 @@
-require 'komrade-client/worker'
+require 'komrade-client/dispatcher'
 require 'komrade-client/queue'
 
 task :environment
@@ -6,10 +6,9 @@ task :environment
 namespace :komrade do
   desc "Start a new worker."
   task :work  => :environment do
-    trap('INT') {exit}
-    trap('TERM') {@worker.stop}
-    @worker = Komrade::Worker.new
-    @worker.start
+    trap('INT') {Komrade::Dispatcher.stop}
+    trap('TERM') {exit}
+   Komrade::Dispatcher.start
   end
 
   desc "Deletes all jobs in the queue."
