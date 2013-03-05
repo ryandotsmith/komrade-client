@@ -8,7 +8,7 @@ namespace :komrade do
   task :work  => :environment do
     trap('INT') {Komrade::Dispatcher.stop}
     trap('TERM') {exit}
-   Komrade::Dispatcher.start
+   Komrade::Dispatcher.start(ENV['threads'])
   end
 
   desc "Deletes all jobs in the queue."

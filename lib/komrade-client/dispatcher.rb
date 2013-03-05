@@ -2,6 +2,8 @@ require 'thread'
 require 'komrade-client/worker'
 require 'komrade-client/queue'
 
+Thread.abort_on_exception = true
+
 module Komrade
   module Dispatcher
     extend self
@@ -13,7 +15,8 @@ module Komrade
     # Start a loop and work jobs indefinitely.
     # Call this method to start the worker.
     # This is the easiest way to start working jobs.
-    def start(num_threads=4)
+    def start(num_threads)
+      num_threads ||= 4
       Komrade.log(:at => "Starting komrade worker.", :num_threads => num_threads)
       @producer = Thread.new do
         while @running
