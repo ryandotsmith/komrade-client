@@ -16,7 +16,7 @@ module Komrade
     # Call this method to start the worker.
     # This is the easiest way to start working jobs.
     def start(num_threads)
-      num_threads ||= 4
+      num_threads = (num_threads || 4).to_i
       Komrade.log(:at => "Starting komrade worker.", :num_threads => num_threads)
       @producer = Thread.new do
         while @running
